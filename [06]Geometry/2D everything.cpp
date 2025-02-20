@@ -39,6 +39,16 @@ class point{
     double ans = Angle(b) - Angle(a);
     return ans <= -PI ? ans + 2*PI : (ans > PI ? ans - 2*PI : ans);
   }
+  friend double Angle(const point &A, const point &B, const point &C) {
+    point BA = A - B;
+    point BC = C - B;
+    double dot = BA ^ BC;
+    double magBA = sqrt(~BA);
+    double magBC = sqrt(~BC);
+    double cosTheta = dot / (magBA * magBC);
+    cosTheta = std::max(-1.0, std::min(1.0, cosTheta));
+    return acos(cosTheta);
+  }
   point Perp(const point &a){ return point(-a.y, a.x); }
   point Conj(const point &a){ return point(a.x, -a.y); }
 };

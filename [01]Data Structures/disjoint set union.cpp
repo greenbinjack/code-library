@@ -8,7 +8,7 @@ struct DSU{
     if(par[node] == node) return node;
     return par[node] = Anc(par[node]); 
   }
-  bool same(int x, int y){
+  bool Same(int x, int y){
     return Anc(x) == Anc(y);
   }
   void Union(int x, int y){

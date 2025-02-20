@@ -19,7 +19,7 @@ class segtree {
     }
     void update (int curLeft, int curRight, DT updated_val, int idx, int pos = 1) {
       if (curLeft == curRight) {
-        tr[pos] = updated_val;
+        VT :: apply (tr[pos], updated_val);
         return;
       }
       int mid = (curLeft + curRight) >> 1, lft = pos << 1, ryt = pos << 1 | 1;
@@ -50,6 +50,25 @@ struct summation {
   static DT merge (const DT &a, const DT &b) {
     return a + b;
   }
+  static void apply (DT &cur_node, const DT &updated_val) {
+    cur_node = updated_val;
+  }
+};
+struct node {
+  int val, len;  
+};
+struct hashing {
+  using DT = node; 
+  static constexpr DT I = {0, 0};
+  static DT merge (const DT &a, const DT &b) {
+    DT ans;
+    ans.val = (1LL * a.val * base[b.len] + b.val) % MOD;
+    ans.len = a.len + b.len;
+    return ans;
+  }
+  static void apply (DT &cur_node, const DT &updated_val) {
+    cur_node = updated_val;
+  }
 };
 
 struct minimum {
@@ -57,6 +76,9 @@ struct minimum {
   static constexpr DT I = 1e18 + 69;
   static DT merge (const DT &a, const DT &b) {
     return min (a, b);
+  }
+  static void apply (DT &cur_node, const DT &updated_val) {
+    cur_node = updated_val;
   }
 };
 
@@ -66,6 +88,9 @@ struct maximum {
   static DT merge (const DT &a, const DT &b) {
     return max (a, b);
   }
+  static void apply (DT &cur_node, const DT &updated_val) {
+    cur_node = updated_val;
+  }
 };
 
 struct xorsum {
@@ -73,6 +98,9 @@ struct xorsum {
   static constexpr DT I = 0;
   static DT merge (const DT &a, const DT &b) {
     return a ^ b;
+  }
+  static void apply (DT &cur_node, const DT &updated_val) {
+    cur_node = updated_val;
   }
 };
 

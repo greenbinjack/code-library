@@ -1,6 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+#define all(v) v.begin(), v.end()
+
 using LL = long long;
+
+const int N = 2E5 + 69;
+
 struct Edge {
   int u, v;
   Edge(int _u = 0, int _v = 0) : u(_u), v(_v) {}
@@ -67,23 +73,77 @@ namespace BT {
   }
 }
 using Tree = Graph;
+
+void search (int cur, vector <int> &dist, vector < vector <int> > &newGraph) {
+    dist[cur] = 0;
+    queue<int> q;
+    q.push (cur);
+    while (!q.empty ()) {
+        int u = q.top ();
+        q.pop ();
+        for (int next : newGraph[u]) {
+            if (dist[next] == -1) {
+                dist[next] = dist[cur] + 1;
+                q.push (next);
+            }
+        }
+    }
+}
+
 int main() {
-  ios_base :: sync_with_stdio(0);
-  cin.tie(0);
-  int n, m; cin >> n >> m;
-  Graph G(n);
-  vector <Edge> edges(m);
+  cin.tie (nullptr) -> ios_base :: sync_with_stdio (false);
+
+  int n, m; 
+  cin >> n >> m;
+  Graph G (n);
+  vector <Edge> edges (m);
   for(auto &[u, v]: edges) {
-      cin >> u >> v;
-      G.addEdge(u, v);
+    cin >> u >> v;
+    --u, v--;
+    G.addEdge(u, v);
   }
   BT :: init(G);
   Tree T = BT :: createTree();
   using BT :: comps;
-  cout << comps.size() << '\n';
-  for(auto &c: comps) {
-    cout << c.size() << ' ';
-    for(int u: c) cout << u << ' ';
-    cout << '\n';
+  
+  vector <int> v (n);
+  int color = 0;
+  cout << comps.size () << endl;
+  for (auto i : comps) {
+    for (auto c : i) v[c] = color;
+    color++;
   }
+
+  int sz = comps.size ();
+  vector < vector <int> > newGraph (sz);
+  map <pair <int, int>, int> mp;
+  for (int i = 0; i < m; i++) {
+    int x = v[edges[i].u], y = v[edges[i].v];
+    if (x > y) swap (x, y);
+    if (mp.count ({x, y}) or x == y) continue;
+    newGraph[x].push_back (y);
+    newGraph[y].push_back (x);
+  }
+  
+  for (int i = 0; i < n; i++) cout << v[i] << " \n"[i == n - 1];
+  
+  vector <int> dist (sz, -1);
+  search (0, dist, newGraph);
+  int pos = max_element (all (dist)) - dist.begin ();
+  cout << pos << endl;
+  dist.assign (sz, -1);
+  search (pos, dist, newGraph);
+  int pos2 = max_element (all (dist)) - dist.begin ();
+  cout << pos2 << endl;
+  cout << *max_element (all (dist)) << endl;
+  
+  int ans1 = 1, ans2 = 1;
+  for (int i = 0; i < n; i++) {
+    if (v[i] == pos) ans1 = i + 1;
+    else if (v[i] == pos2) ans2 = i + 1;
+  }
+  
+  cout << ans1 << ' ' << ans2 << '\n';
+  
+  return 0;
 }

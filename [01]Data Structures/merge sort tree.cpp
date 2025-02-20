@@ -21,7 +21,7 @@ public:
     int mid = (curLeft + curRight) >> 1, lft = pos << 1, ryt = pos << 1 | 1;
     return query(curLeft, mid, l, r, k, lft) + query(mid + 1, curRight, l, r, k, ryt);
   }
-  // count if [mn, mx] is in [l, r] range, if there is any segment x belongs to [l, r] in [mn, mx]
+  // count if [mn, mx] is in [l, r] range or if there is any segment x belongs to [l, r] in [mn, mx]
   int count (int curLeft, int curRight, int l, int r, int mn, int mx, int pos = 1) {
     if (r < curLeft or l > curRight or l > r) return 0;
     if (curLeft >= l and curRight <= r) return lower_bound (all (Tree[pos]), mx) - lower_bound (all (Tree[pos]), mn);
