@@ -1,26 +1,27 @@
-template <LL mod> struct INT_MOD {
+template <LL mod> struct mint {
   LL val;
-  INT_MOD(LL val = 0): val(val >= 0 ? val % mod : val % mod + mod) {}
-  INT_MOD operator + (INT_MOD rhs) const { return INT_MOD((val + rhs.val)); }
-  INT_MOD operator - (INT_MOD rhs) const { return INT_MOD((val - rhs.val)); }
-  INT_MOD operator * (INT_MOD rhs) const { return INT_MOD((val * rhs.val)); }
-  INT_MOD operator / (INT_MOD rhs) const { return INT_MOD( binpow(rhs, mod - 2) * val);}
-  void operator += (INT_MOD rhs) { *this = *this + rhs; }
-  void operator -= (INT_MOD rhs) { *this = *this - rhs; }
-  void operator *= (INT_MOD rhs) { *this = *this * rhs; }
-  void operator /= (INT_MOD rhs) { *this = *this / rhs; }
-  friend INT_MOD binpow (INT_MOD val, LL p) {
-    INT_MOD ans = 1;
+  mint(LL val = 0): val(val >= 0 ? val % mod : val % mod + mod) {}
+  mint operator + (mint rhs) const { return mint((val + rhs.val)); }
+  mint operator - (mint rhs) const { return mint((val - rhs.val)); }
+  mint operator * (mint rhs) const { return mint((val * rhs.val)); }
+  mint operator / (mint rhs) const { return mint( binpow(rhs, mod - 2) * val);}
+  void operator += (mint rhs) { *this = *this + rhs; }
+  void operator -= (mint rhs) { *this = *this - rhs; }
+  void operator *= (mint rhs) { *this = *this * rhs; }
+  void operator /= (mint rhs) { *this = *this / rhs; }
+  friend mint binpow (mint val, LL p) {
+    mint ans = 1;
     for (; p > 0; p >>= 1, val *= val) if (p & 1) ans = ans * val;
     return ans;
   }
-  friend ostream& operator << (ostream& o, INT_MOD &a) {
+  friend ostream& operator << (ostream& o, mint &a) {
     o << a.val; return o;
   }
-  friend istream& operator >> (istream& o, INT_MOD &a) {
+  friend istream& operator >> (istream& o, mint &a) {
     o >> a.val; return o;
   }
-  friend LL abs(INT_MOD a) {
+  friend LL abs(mint a) {
     return abs(a.val);
   }
 };
+
